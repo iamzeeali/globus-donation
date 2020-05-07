@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logout } from "../../_actions/authAction";
-import logo from "../../images/logo1.png";
+// import logo from "../images/logo1.png";
 import "./Dashboard.css";
 
-const Navbar = (
-  { auth: { isAuthenticated, loading, role }, logout, organisation, guestOrg },
+const NavbarTest = (
+  { auth: { isAuthenticated, loading, role, user }, logout, organisation },
   props
 ) => {
   const authLinksAdmin = (
@@ -17,13 +17,7 @@ const Navbar = (
           <div className="row">
             <div className="col-md-12">
               <nav className="navbar navbar-expand-lg  navigation">
-                <Link className="navbar-brand" to="/dashboard">
-                  <img
-                    src={!organisation.logo ? logo : organisation.logo}
-                    alt="globus labs logo"
-                    width="200px"
-                  />
-                </Link>
+                <Link className="navbar-brand" to="/dashboard"></Link>
                 <button
                   className="navbar-toggler"
                   type="button"
@@ -70,7 +64,7 @@ const Navbar = (
                         </Link>
                         <Link
                           className="dropdown-item"
-                          to="/admin/donation/viewAllDonations"
+                          to="/admin/viewinvestment"
                         >
                           View Donation
                         </Link>
@@ -79,7 +73,7 @@ const Navbar = (
                         </Link>
                         <Link
                           className="dropdown-item"
-                          to="/admin/expenses/viewAllexpenses"
+                          to="/admin/view-expense"
                         >
                           View Expenses
                         </Link>
@@ -150,9 +144,7 @@ const Navbar = (
           <div className="row">
             <div className="col-md-12">
               <nav className="navbar navbar-expand-lg  navigation">
-                <Link className="navbar-brand" to="/">
-                  <img src={guestOrg ? guestOrg.logo : logo} width="220px" />
-                </Link>
+                <Link className="navbar-brand" to="/"></Link>
                 <button
                   className="navbar-toggler"
                   type="button"
@@ -171,11 +163,11 @@ const Navbar = (
                 >
                   <ul className="navbar-nav ml-auto main-nav ">
                     <li className="nav-item active">
-                      <Link className="nav-link" to="/">
+                      <Link className="nav-link" to="/dashboardguest">
                         Home
                       </Link>
                     </li>
-                    {/*}
+
                     <li className="nav-item dropdown dropdown-slide">
                       <Link
                         className="nav-link dropdown-toggle"
@@ -184,7 +176,7 @@ const Navbar = (
                         aria-haspopup="true"
                         aria-expanded="false"
                       >
-                        Reports{" "}
+                        Transaction{" "}
                         <span>
                           <i className="fa fa-angle-down"></i>
                         </span>{" "}
@@ -193,20 +185,18 @@ const Navbar = (
                       <div className="dropdown-menu dropdown-menu-right">
                         <Link
                           className="dropdown-item"
-                          to="/admin/donation/viewAllDonations"
+                          to="/admin/investment/viewAllinvestment"
                         >
                           View Donation
                         </Link>
                         <Link
                           className="dropdown-item"
-                          to={`/guestExpenses/${match && match.params.handle}`}
+                          to="/admin/expenses/viewAllexpenses"
                         >
                           View Expenses
                         </Link>
                       </div>
                     </li>
-
-  */}
                   </ul>
 
                   <ul className="navbar-nav ml-4">
@@ -235,13 +225,7 @@ const Navbar = (
           <div className="row">
             <div className="col-md-12">
               <nav className="navbar navbar-expand-lg  navigation">
-                <Link className="navbar-brand" to="/">
-                  <img
-                    src={!organisation.logo ? logo : organisation.logo}
-                    alt="globus labs logo"
-                    width="220px"
-                  />
-                </Link>
+                <Link className="navbar-brand" to="/"></Link>
                 <button
                   className="navbar-toggler"
                   type="button"
@@ -330,7 +314,7 @@ const Navbar = (
   );
 };
 
-Navbar.propTypes = {
+NavbarTest.propTypes = {
   logout: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
@@ -339,8 +323,7 @@ const mapStateToProps = (state) => ({
   organisation: state.auth.user.organisation
     ? state.auth.user.organisation
     : "",
-  guestOrg: state.organisation && state.organisation.organisation,
 });
-export default connect(mapStateToProps, { logout })(Navbar);
+export default connect(mapStateToProps, { logout })(NavbarTest);
 
 // {isAuthenticated && degreetype === "B.Com" || "B.LIB - B.LIB.SC" || "B.A." || "B.A.(Hons.)" || "B.AMS" || "B.Arch" || "BCA/BCM" || "10th" || "12th" || "B.Des" || "B.Ed" || "B.FSC" || "B.M.C - B.M.M" || "B.P.ED" || "B.Pharm" || "BBA/BBM/BBS(hons)" || "BCOM(hons)" || "" ? authLinksA : isAuthenticated && degreetype === "B.E./ B.Tech" || "B.sc" || "B.Arch" || "B.Sc(hons)" || "MBA/PGDM" || "BCA/BCM" || "MCA" || "PG Diploma" || "M.Tech" ? authLinksB : guestLinks}

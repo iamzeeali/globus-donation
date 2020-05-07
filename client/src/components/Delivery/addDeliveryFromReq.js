@@ -181,10 +181,9 @@ const AddDeliveredKit = ({
                           value={state}
                           onChange={(e) => onChangeState(e)}
                           required
+                          selected={state}
                         >
-                          <option value="" disabled selected hidden>
-                            -Select State-
-                          </option>
+                          <option value={state}>{state}</option>
                           {stateOptions}
                         </select>
 
@@ -194,10 +193,9 @@ const AddDeliveredKit = ({
                           value={city}
                           onChange={(e) => onChangeCity(e)}
                           required
+                          selected={city}
                         >
-                          <option value="" disabled selected hidden>
-                            -Select City-
-                          </option>
+                          <option value={city}>{city}</option>
                           {cityOptions}
                         </select>
 
