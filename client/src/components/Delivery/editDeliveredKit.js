@@ -38,6 +38,7 @@ const EditRation = ({
     city: "",
     area: "",
     road: "",
+    houseNo: "",
     landmark: "",
     description: "",
     date: new Date(),
@@ -57,6 +58,7 @@ const EditRation = ({
       city: loading || !ration.city ? "" : ration.city,
       area: loading || !ration.area ? "" : ration.area,
       road: loading || !ration.road ? "" : ration.road,
+      houseNo: loading || !ration.houseNo ? "" : ration.houseNo,
       landmark: loading || !ration.landmark ? "" : ration.landmark,
       description: loading || !ration.description ? "" : ration.description,
 
@@ -73,6 +75,7 @@ const EditRation = ({
     city,
     area,
     road,
+    houseNo,
     landmark,
     description,
     date,
@@ -205,6 +208,15 @@ const EditRation = ({
                       placeholder="Road"
                       type="text"
                       value={road}
+                      onChange={(e) => onChangeHandler(e)}
+                      className="border p-2 w-100 my-2"
+                    />
+
+                    <input
+                      name="houseNo"
+                      placeholder="House No"
+                      type="text"
+                      value={houseNo}
                       onChange={(e) => onChangeHandler(e)}
                       className="border p-2 w-100 my-2"
                     />

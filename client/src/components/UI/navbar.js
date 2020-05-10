@@ -19,7 +19,11 @@ const Navbar = (
               <nav className="navbar navbar-expand-lg  navigation">
                 <Link className="navbar-brand" to="/dashboard">
                   <img
-                    src={!organisation.logo ? logo : organisation.logo}
+                    src={
+                      !organisation.logo
+                        ? logo
+                        : `${process.env.PUBLIC_URL}/uploads/organisation/${organisation.logo}`
+                    }
                     alt="globus labs logo"
                     width="200px"
                   />
@@ -151,7 +155,14 @@ const Navbar = (
             <div className="col-md-12">
               <nav className="navbar navbar-expand-lg  navigation">
                 <Link className="navbar-brand" to="/">
-                  <img src={guestOrg ? guestOrg.logo : logo} width="220px" />
+                  <img
+                    src={
+                      guestOrg
+                        ? `${process.env.PUBLIC_URL}/uploads/organisation/${guestOrg.logo}`
+                        : logo
+                    }
+                    width="220px"
+                  />
                 </Link>
                 <button
                   className="navbar-toggler"
@@ -237,7 +248,11 @@ const Navbar = (
               <nav className="navbar navbar-expand-lg  navigation">
                 <Link className="navbar-brand" to="/">
                   <img
-                    src={!organisation.logo ? logo : organisation.logo}
+                    src={
+                      !organisation.logo
+                        ? logo
+                        : `${process.env.PUBLIC_URL}/uploads/organisation/${organisation.logo}`
+                    }
                     alt="globus labs logo"
                     width="220px"
                   />

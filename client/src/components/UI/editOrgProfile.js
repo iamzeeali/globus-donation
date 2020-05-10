@@ -17,6 +17,7 @@ const EditOrganisation = ({
 }) => {
   const [formData, setFormData] = useState({
     orgName: "",
+    handle: "",
     state: "",
     city: "",
     address: "",
@@ -32,6 +33,7 @@ const EditOrganisation = ({
     getCurrentOrganisation(match.params.id);
     setFormData({
       orgName: loading || !organisation.orgName ? "" : organisation.orgName,
+      handle: loading || !organisation.handle ? "" : organisation.handle,
       state: loading || !organisation.state ? "" : organisation.state,
       city: loading || !organisation.city ? "" : organisation.city,
       address: loading || !organisation.address ? "" : organisation.address,
@@ -39,12 +41,14 @@ const EditOrganisation = ({
       email: loading || !organisation.email ? "" : organisation.email,
       website: loading || !organisation.website ? "" : organisation.website,
       phone: loading || !organisation.phone ? "" : organisation.phone,
+      dashMsg: loading || !organisation.dashMsg ? "" : organisation.dashMsg,
     });
     //eslint-disable-next-line
   }, [loading, getCurrentOrganisation]);
 
   const {
     orgName,
+    handle,
     state,
     city,
     address,
@@ -60,15 +64,37 @@ const EditOrganisation = ({
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const onChangeImage = (e) => {
+    e.preventDefault();
+    setFormData({ ...formData, logo: e.target.files[0] });
+  };
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    // for uploading images send file as blob multipart/form-data
+    let formData = new FormData();
+
+    formData.append("logo", logo);
+    formData.append("orgName", orgName);
+    formData.append("handle", handle);
+    formData.append("state", state);
+    formData.append("city", city);
+    formData.append("address", address);
+    formData.append("email", email);
+    formData.append("website", website);
+    formData.append("phone", phone);
+    formData.append("dashMsg", dashMsg);
+
     editOrganisation(formData, history, match.params.id);
   };
 
   return (
     <Fragment>
       <div className="container-fluid pb-4 mb-4">
-        <form onSubmit={(e) => onSubmitHandler(e)}>
+        <form
+          encType="multipart/form-data"
+          onSubmit={(e) => onSubmitHandler(e)}
+        >
           <section className="login py-2 border-top-1">
             <div className="container ">
               <div className="row justify-content-center animated fadeIn">
@@ -88,6 +114,15 @@ const EditOrganisation = ({
                         placeholder="Name of Organisation"
                         type="text"
                         value={orgName}
+                        onChange={(e) => onChangeHandler(e)}
+                        className="border p-3 w-100 my-2"
+                        required
+                      />
+                      <input
+                        name="handle"
+                        placeholder="Handle of Organisation"
+                        type="text"
+                        value={handle}
                         onChange={(e) => onChangeHandler(e)}
                         className="border p-3 w-100 my-2"
                         required
@@ -149,16 +184,24 @@ const EditOrganisation = ({
                         className="border p-3 w-100 my-2"
                       />
 
-                      <input
-                        name="logo"
-                        placeholder="Logo URL"
-                        type="text"
-                        value={logo}
-                        onChange={(e) => onChangeHandler(e)}
-                        className="border p-3 w-100 my-2"
-                        required
-                      />
-
+                      <div>
+                        <small>
+                          Upload Recipt{" "}
+                          <b>
+                            Max-File-Size-1MB <br />
+                            Supported File jpg/png
+                          </b>
+                        </small>
+                        <input
+                          placeholder="Upload Receipt"
+                          type="file"
+                          tdata-button="Upload Recipt"
+                          name="logo"
+                          onChange={onChangeImage}
+                          className="border p-3 w-100 my-2"
+                        />{" "}
+                        <br />
+                      </div>
                       <textarea
                         name="dashMsg"
                         placeholder="Message for Viewers"

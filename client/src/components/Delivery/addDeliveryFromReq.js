@@ -46,6 +46,7 @@ const AddDeliveredKit = ({
     city: "",
     area: "",
     road: "",
+    houseNo: "",
     landmark: "",
     description: "",
     date: new Date(),

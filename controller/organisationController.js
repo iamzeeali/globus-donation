@@ -17,7 +17,7 @@ exports.getOrgByHandle = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.createOrganisation = factory.createOne(Organisation);
+//exports.createOrganisation = factory.createOne(Organisation);
 exports.getAllOrganisations = factory.getAll(Organisation);
 exports.getOrganisation = factory.getOne(Organisation);
 exports.updateOrganisation = factory.updateOne(Organisation);

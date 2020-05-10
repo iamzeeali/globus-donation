@@ -40,6 +40,7 @@ const AddDeliveredKit = ({
     city: "",
     area: "",
     road: "",
+    houseNo: "",
     landmark: "",
     description: "",
     date: new Date(),
@@ -355,7 +356,6 @@ const AddDeliveredKit = ({
                           value={road}
                           onChange={(e) => onChangeHandler(e)}
                           className="border p-2 w-100 my-2"
-                          required
                         />
 
                         <input
@@ -365,7 +365,6 @@ const AddDeliveredKit = ({
                           value={houseNo}
                           onChange={(e) => onChangeHandler(e)}
                           className="border p-2 w-100 my-2"
-                          required
                         />
 
                         <input

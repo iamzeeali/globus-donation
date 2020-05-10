@@ -220,7 +220,6 @@ const AddKitReq = ({
                           value={houseNo}
                           onChange={(e) => onChangeHandler(e)}
                           className="border p-2 w-100 my-2"
-                          required
                         />
 
                         <input
