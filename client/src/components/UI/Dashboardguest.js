@@ -78,9 +78,11 @@ const Dashboard = ({
 
                   <div className="col-lg-3 col-md-5 col-sm-6">
                     <div className="circle-tile ">
-                      <div className="circle-tile-heading orange">
-                        <i className="fa fa-medkit fa-fw fa-2x"></i>
-                      </div>
+                      <Link to={`/guestDeliveries/${match.params.handle}`}>
+                        <div className="circle-tile-heading orange">
+                          <i className="fa fa-medkit fa-fw fa-2x"></i>
+                        </div>
+                      </Link>
                       <div className="circle-tile-content orange">
                         <div className="circle-tile-description text-faded">
                           Kit Delivered

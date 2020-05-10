@@ -3,9 +3,6 @@ import { getGuestExpenses } from "../../../_actions/expenseAction";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import InfiniteScroll from "react-infinite-scroll-component";
-import ReactToExcel from "react-html-table-to-excel";
-import Skeleton from "react-loading-skeleton";
 
 const GuestExpenses = ({ getGuestExpenses, expenses, loading, match }) => {
   const [scroll, setScroll] = useState({
@@ -18,11 +15,6 @@ const GuestExpenses = ({ getGuestExpenses, expenses, loading, match }) => {
     getGuestExpenses(limit, page, match.params.handle);
     //eslint-disable-next-line
   }, [getGuestExpenses]);
-
-  const fetch = () => {
-    let { limit, page } = scroll;
-    setScroll({ ...scroll, page: ++page });
-  };
 
   //----SORTING--------------
 
