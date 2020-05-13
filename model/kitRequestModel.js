@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 
 const kitRequestSchema = new mongoose.Schema({
+  date: {
+    type: Date,
+    default: Date.now,
+  },
   name: {
     type: String,
   },
@@ -14,7 +18,6 @@ const kitRequestSchema = new mongoose.Schema({
   },
   stateName: {
     type: String,
-    //required: [true, "state missing"],
   },
   city: {
     type: String,

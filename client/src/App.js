@@ -10,7 +10,6 @@ import "./App.css";
 import Alert from "./components/UI/Alert";
 import Navbar from "./components/UI/navbar";
 import Login from "./components/UI/Login";
-//import Register from './components/UI/Register';
 
 import DashboardMain from "./components/UI/DashboardMain";
 import Profile from "./components/UI/Profile";
@@ -19,7 +18,6 @@ import AddExpense from "./components/Expense/addExpense";
 import EditInvestment from "./components/Investment/editInvestment";
 import ViewExpenses from "./components/Expense/viewExpenses";
 import EditExpense from "./components/Expense/editExpenses";
-//---REPORTS---------------
 import ReportsLanding from "./components/Reports/reportsLanding";
 import ViewAllInvestment from "./components/Reports/viewAllInvestment";
 import ViewAllExpenses from "./components/Reports/viewAllExpenses";
@@ -62,6 +60,8 @@ import Cities from "./components/City/Cities";
 import EditCity from "./components/City/EditCity";
 
 import KitReq from "./components/GuestForm/kitReq";
+import EditKitReq from "./components/GuestForm/editKitReq";
+
 import ContactUs from "./components/GuestForm/contactus";
 import ViewContactUs from "./components/Reports/viewContactUs";
 import ViewKitReq from "./components/Reports/viewKitReq";
@@ -180,6 +180,7 @@ const App = () => {
             <PrivateRoute path="/addCause" component={addCause} />
             <PrivateRoute path="/causes" component={causes} />
             <PrivateRoute path={`/editCause/:id`} component={editCause} />
+            <PrivateRoute path={`/editKitReq/:id`} component={EditKitReq} />
             <Route
               path="/guestDeliveries/:handle"
               component={ViewGuestRation}
@@ -197,7 +198,6 @@ const App = () => {
               path="/admin/expenses/viewAllexpenses"
               component={ViewAllExpenses}
             />
-            // Guest routes
             <Route path="/guestDonations/:handle" component={GuestDonations} />
             <Route path="/guestExpenses/:handle" component={GuestExpenses} />
             <Route path="/admin/view-expense" component={ViewExpenses} />

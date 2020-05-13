@@ -48,9 +48,16 @@ const KitReq = ({ getKitReqs, kitreqs, setCurrentKitReq }) => {
                   {cu.city} <br /> <strong>State: </strong>
                   {cu.stateName} <br />
                   <Link
+                    to={`/editKitReq/${cu._id}`}
+                    onClick={() => setCurrentKitReq(cu)}
+                    className="btn btn-block btn-info mt-3"
+                  >
+                    Edit
+                  </Link>
+                  <Link
                     to={`/addDelFromReq/${cu._id}`}
                     onClick={() => setCurrentKitReq(cu)}
-                    className="btn btn-block btn-warning my-3"
+                    className="btn btn-block btn-warning mt-1"
                   >
                     Deliver?
                   </Link>

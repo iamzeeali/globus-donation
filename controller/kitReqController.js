@@ -5,8 +5,24 @@ const AppError = require("../utils/appError");
 const sendEmail = require("../utils/email");
 const APIFeatures = require("../utils/apiFeatures");
 
-//exports.createKitRequest = factory.createOne(KitRequest);
-exports.getAllKitRequests = factory.getAll(KitRequest);
+exports.getAllKitRequests = catchAsync(async (req, res, next) => {
+  const features = await new APIFeatures(
+    KitRequest.find({
+      handle: req.user.organisation && req.user.organisation.handle,
+    }),
+    req.query
+  )
+    .sort()
+    .paginate();
+
+  const docs = await features.query;
+  res.status(200).json({
+    status: "success",
+    result: docs.length,
+    data: docs,
+  });
+});
+
 exports.getKitRequest = factory.getOne(KitRequest);
 exports.updateKitRequest = factory.updateOne(KitRequest);
 exports.deleteKitRequest = factory.deleteOne(KitRequest);
@@ -58,7 +74,6 @@ exports.createKitRequest = catchAsync(async (req, res, next) => {
       <small>Please ignore this email if it's not meant for you. Thank you.</small>`;
 
   try {
-    // const doc = await KitRequest.create(req.body);
     let maillist = ["kamran@globuslabs.com", "zeeshan.globuslabs@gmail.com"];
 
     const newKitRequest = new KitRequest({
@@ -99,8 +114,6 @@ exports.createKitRequest = catchAsync(async (req, res, next) => {
     );
   }
 });
-
-// Total Ration Kit
 
 exports.totalKitReq = catchAsync(async (req, res, next) => {
   const features = await new APIFeatures(

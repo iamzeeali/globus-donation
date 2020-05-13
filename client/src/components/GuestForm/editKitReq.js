@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { addKitReq } from "../../_actions/kitReqAction";
+import { editKitReq, getCurrentKitReq } from "../../_actions/kitReqAction";
 import "../UI/Dashboard.css";
 import Spinner from "../UI/Spinner";
 import {
@@ -11,10 +11,11 @@ import {
   getStates,
   populateCities,
 } from "../../_actions/cityAction";
+import moment from "moment";
 
-const AddKitReq = ({
+const EditKitReq = ({
   history,
-  addKitReq,
+  editKitReq,
   sendingLoader,
   getCities,
   getStates,
@@ -24,9 +25,14 @@ const AddKitReq = ({
   populateAreas,
   populateCities,
   match,
+  kitReq,
+  getCurrentKitReq,
+  loading,
+  org,
 }) => {
   const [formData, setFormData] = useState({
     date: "",
+
     name: "",
     kitQuantity: "",
     state: "",
@@ -38,7 +44,7 @@ const AddKitReq = ({
     houseNo: "",
     phone: "",
     email: "",
-    handle: match.params.handle && match.params.handle,
+    handle: org && org.handle,
   });
 
   const {
@@ -46,12 +52,12 @@ const AddKitReq = ({
     name,
     kitQuantity,
     state,
-    stateName,
     city,
     area,
     road,
     landmark,
     houseNo,
+    stateName,
     phone,
     email,
   } = formData;
@@ -59,6 +65,23 @@ const AddKitReq = ({
   useEffect(() => {
     getCities();
     getStates();
+    getCurrentKitReq(match.params.id);
+    setFormData({
+      date:
+        loading || !kitReq.date ? "" : moment(kitReq.date).format("YYYY-MM-DD"),
+      name: loading || !kitReq.name ? "" : kitReq.name,
+
+      kitQuantity: loading || !kitReq.kitQuantity ? "" : kitReq.kitQuantity,
+      state: loading || !kitReq.state ? "" : kitReq.state,
+      city: loading || !kitReq.city ? "" : kitReq.city,
+      area: loading || !kitReq.area ? "" : kitReq.area,
+      road: loading || !kitReq.road ? "" : kitReq.road,
+      city: loading || !kitReq.city ? "" : kitReq.city,
+      landmark: loading || !kitReq.landmark ? "" : kitReq.landmark,
+      houseNo: loading || !kitReq.houseNo ? "" : kitReq.houseNo,
+      phone: loading || !kitReq.phone ? "" : kitReq.phone,
+      email: loading || !kitReq.email ? "" : kitReq.email,
+    });
   }, [getCities, getStates]);
 
   const onChangeHandler = (e) => {
@@ -79,7 +102,7 @@ const AddKitReq = ({
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    addKitReq(formData, history);
+    editKitReq(formData, history);
   };
 
   let cityOptions = newCities.map((cit) => (
@@ -125,7 +148,7 @@ const AddKitReq = ({
                         <Link to="/" className="">
                           <i className="fa fa-arrow-left mr-2 float-left"></i>
                         </Link>
-                        Kit Request
+                        Edit Kit Request
                       </h3>
                     </div>
 
@@ -142,7 +165,6 @@ const AddKitReq = ({
                           className="border p-2 w-100 my-2"
                           required
                         />
-
                         <input
                           name="name"
                           placeholder="Name or Organisation Name"
@@ -186,9 +208,7 @@ const AddKitReq = ({
                           onChange={(e) => onChangeState(e)}
                           required
                         >
-                          <option value="" disabled selected hidden>
-                            -Select State-
-                          </option>
+                          <option value={state}>{state}</option>
                           {stateOptions}
                         </select>
 
@@ -199,9 +219,7 @@ const AddKitReq = ({
                           onChange={(e) => onChangeCity(e)}
                           required
                         >
-                          <option value="" disabled selected hidden>
-                            -Select City-
-                          </option>
+                          <option value={city}>{city}</option>
                           {cityOptions}
                         </select>
 
@@ -212,9 +230,7 @@ const AddKitReq = ({
                           onChange={(e) => onChangeHandler(e)}
                           required
                         >
-                          <option value="" disabled selected hidden>
-                            -Select Area-
-                          </option>
+                          <option value={area}>{area}</option>
                           {areaOptions}
                         </select>
 
@@ -257,7 +273,7 @@ const AddKitReq = ({
                           type="submit"
                           className="d-block py-2 px-5 btn-block bg-warning border-0 rounded font-weight-bold mt-3 "
                         >
-                          Add
+                          Save
                         </button>
                       </fieldset>
                     )}
@@ -272,12 +288,13 @@ const AddKitReq = ({
   );
 };
 
-AddKitReq.propTypes = {
-  addKitReq: PropTypes.func.isRequired,
+EditKitReq.propTypes = {
+  editKitReq: PropTypes.func.isRequired,
   getCities: PropTypes.func.isRequired,
   getStates: PropTypes.func.isRequired,
   populateCities: PropTypes.func.isRequired,
   populateAreas: PropTypes.func.isRequired,
+  getCurrentKitReq: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -285,11 +302,15 @@ const mapStateToProps = (state) => ({
   newCities: state.city.newCities,
   states: state.city.states,
   areas: state.city.areas,
+  kitReq: state.kitreq.kitreq,
+  loading: state.kitreq.loading,
+  org: state.auth.org,
 });
 export default connect(mapStateToProps, {
-  addKitReq,
+  editKitReq,
   getCities,
   getStates,
   populateCities,
   populateAreas,
-})(AddKitReq);
+  getCurrentKitReq,
+})(EditKitReq);

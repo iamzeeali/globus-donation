@@ -4,12 +4,9 @@ const authController = require("./../controller/authController");
 
 const router = express.Router({ mergeParams: true });
 
-//Protect all routes after this middleware- Authentication
-// router.use(authController.protect);
-
 router
   .route("/")
-  .get(kitrequestController.getAllKitRequests)
+  .get(authController.protect, kitrequestController.getAllKitRequests)
   .post(kitrequestController.createKitRequest);
 
 router.route("/total").get(kitrequestController.totalKitReq);
