@@ -1,12 +1,24 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { getExpenses } from "../../_actions/expenseAction";
+import {
+  getExpenses,
+  setCurrentExpense,
+  deleteExpense,
+} from "../../_actions/expenseAction";
 import { getAllUsers } from "../../_actions/authAction";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import moment from "moment";
 import ReactToExcel from "react-html-table-to-excel";
+import { Link } from "react-router-dom";
 
-const ViewAllExpenses = ({ getExpenses, expenses, getAllUsers, users }) => {
+const ViewAllExpenses = ({
+  getExpenses,
+  expenses,
+  getAllUsers,
+  setCurrentExpense,
+  deleteExpense,
+  users,
+}) => {
   useEffect(() => {
     getExpenses();
     getAllUsers();
@@ -64,6 +76,10 @@ const ViewAllExpenses = ({ getExpenses, expenses, getAllUsers, users }) => {
     });
   };
 
+  const onDeleteHandler = (id) => {
+    deleteExpense(id);
+  };
+
   return (
     <Fragment>
       <div className="container-fluid  pb-4 mb-4">
@@ -92,6 +108,7 @@ const ViewAllExpenses = ({ getExpenses, expenses, getAllUsers, users }) => {
                         <th scope="col">Purpose</th>
                         <th scope="col">Recipt</th>
                         <th scope="col">Added By</th>
+                        <th scope="col">Actions</th>
                       </tr>
                     </thead>
 
@@ -117,6 +134,21 @@ const ViewAllExpenses = ({ getExpenses, expenses, getAllUsers, users }) => {
                             </a>
                           </td>
                           <td>{`${expense.user.username}`}</td>
+                          <td className="text-right">
+                            <Link
+                              to={`/admin/editExpense/${expense._id}`}
+                              onClick={() => setCurrentExpense(expense)}
+                            >
+                              <i className="fa fa-edit fa-lg mr-4"></i>
+                            </Link>
+                            <Link
+                              title="Delete"
+                              to="#!"
+                              onClick={() => onDeleteHandler(expense._id)}
+                            >
+                              <i className="fa fa-trash text-danger fa-lg"></i>
+                            </Link>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -143,6 +175,8 @@ ViewAllExpenses.propTypes = {
   getAllUsers: PropTypes.func.isRequired,
   expenses: PropTypes.array.isRequired,
   users: PropTypes.array.isRequired,
+  setCurrentExpense: PropTypes.func.isRequired,
+  deleteExpense: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -151,6 +185,9 @@ const mapStateToProps = (state) => ({
   loading: state.expense.loading,
   users: state.auth.users,
 });
-export default connect(mapStateToProps, { getExpenses, getAllUsers })(
-  ViewAllExpenses
-);
+export default connect(mapStateToProps, {
+  getExpenses,
+  getAllUsers,
+  setCurrentExpense,
+  deleteExpense,
+})(ViewAllExpenses);

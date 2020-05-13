@@ -235,7 +235,7 @@ export const editExpense = (formData, history, id) => async (dispatch) => {
       payload: res.data,
     });
 
-    history.push("/admin/view-expense");
+    history.push("/admin/expenses/viewAllexpenses");
 
     dispatch(setAlert("Expense Updated", "success"));
   } catch (err) {

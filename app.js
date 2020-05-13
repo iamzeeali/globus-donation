@@ -31,11 +31,6 @@ const cityRouter = require("./routes/cityRoutes");
 const stateRouter = require("./routes/stateRoutes");
 const causeRouter = require("./routes/causeRoutes");
 
-//  const DB = process.env.DATABASE.replace(
-//   "<PASSWORD>",
-//   process.env.DATABASE_PASSWORD
-//   );
-
 const DB = process.env.DATABASE;
 
 mongoose
@@ -64,7 +59,9 @@ app.use(function (req, res, next) {
 });
 
 //-- Upload Setup----
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "./client/public")));
+
+app.use("/public", express.static(__dirname + "/public"));
 
 // app.use(express.static(path.join(__dirname, './client/public/')));
 
@@ -98,20 +95,6 @@ app.use(mongoSanitize());
 //Data sanitization against XSS(cross site scripting attacks)
 app.use(xss());
 
-//Prevent Paramter Pollution
-app.use(
-  hpp({
-    // whitelist: [
-    //   "duration",
-    //   "ratingsQuantity",
-    //   "ratingsAverage",
-    //   "maxGroupSize",
-    //   "difficulty",
-    //   "price"
-    // ]
-  })
-);
-
 app.use(compression());
 
 //***************************/ROUTES***********************************
@@ -131,21 +114,6 @@ app.use("/api/contactus", contactUsRouter);
 app.use("/api/city", cityRouter);
 app.use("/api/state", stateRouter);
 app.use("/api/cause", causeRouter);
-
-//--DOWNLOAD PDF----
-// app.get("/fetch-inv", (req, res) => {
-//     res.sendFile(`${__dirname}/result.pdf`);
-// });
-
-//Serve static assets in production
-if (process.env.NODE_ENV === "production") {
-  // Set static folder
-  app.use(express.static("client/build"));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  });
-}
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

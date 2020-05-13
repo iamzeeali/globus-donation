@@ -2,6 +2,8 @@ import React, { Fragment, useEffect, useState } from "react";
 import {
   getInvestments,
   fetchInvestment,
+  setCurrentInvestment,
+  deleteInvestment,
 } from "../../_actions/investmentAction";
 import { getAllUsers } from "../../_actions/authAction";
 import moment from "moment";
@@ -10,12 +12,15 @@ import { connect } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ReactToExcel from "react-html-table-to-excel";
 import Skeleton from "react-loading-skeleton";
+import { Link } from "react-router-dom";
 
 const ViewAllInvestment = ({
   getInvestments,
   investments,
   fetchInvestment,
   getAllUsers,
+  setCurrentInvestment,
+  deleteInvestment,
   loading,
 }) => {
   const [scroll, setScroll] = useState({
@@ -87,6 +92,10 @@ const ViewAllInvestment = ({
     });
   };
 
+  const onDeleteHandler = (id) => {
+    deleteInvestment(id);
+  };
+
   return (
     <Fragment>
       <div className="container-fluid pb-4 mb-4">
@@ -120,6 +129,7 @@ const ViewAllInvestment = ({
                       <th scope="col">Donated By</th>
                       <th scope="col">Recipt</th>
                       <th scope="col">Added by</th>
+                      <th scope="col">Actions</th>
                     </tr>
                   </thead>
 
@@ -145,12 +155,12 @@ const ViewAllInvestment = ({
 
                         <td>
                           <a
-                            href={`${process.env.PUBLIC_URL}/uploads/${investment.image}`}
+                            href={`/uploads/${investment.image}`}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
                             <img
-                              src={`${process.env.PUBLIC_URL}/uploads/${investment.image}`}
+                              src={`/uploads/${investment.image}`}
                               alt={investment.image}
                               className="profileImg"
                             ></img>
@@ -158,6 +168,21 @@ const ViewAllInvestment = ({
                         </td>
 
                         <td>{`${investment.user.username}`}</td>
+                        <td className="text-right">
+                          <Link
+                            to={`/admin/editInvestment/${investment._id}`}
+                            onClick={() => setCurrentInvestment(investment)}
+                          >
+                            <i className="fa fa-edit fa-lg mr-4"></i>
+                          </Link>
+                          <Link
+                            title="Delete"
+                            to="#!"
+                            onClick={() => onDeleteHandler(investment._id)}
+                          >
+                            <i className="fa fa-trash text-danger fa-lg"></i>
+                          </Link>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -188,6 +213,8 @@ ViewAllInvestment.propTypes = {
   getAllUsers: PropTypes.func.isRequired,
   users: PropTypes.array.isRequired,
   investments: PropTypes.array.isRequired,
+  setCurrentInvestment: PropTypes.func.isRequired,
+  deleteInvestment: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -200,6 +227,8 @@ export default connect(mapStateToProps, {
   getInvestments,
   getAllUsers,
   fetchInvestment,
+  setCurrentInvestment,
+  deleteInvestment,
 })(ViewAllInvestment);
 
 //{`${Math.round((investment.amount / 785) * 10) / 10}Kit`}

@@ -92,7 +92,9 @@ const resizeReciptPhoto = (req, res, next) => {
     })
     .toFormat("jpeg")
     .jpeg({ quality: 80 })
-    .toFile(path.join(__dirname, `../public/uploads/${req.file.filename}`));
+    .toFile(
+      path.join(__dirname, `../client/public/uploads/${req.file.filename}`)
+    );
   next();
 };
 

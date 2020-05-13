@@ -11,6 +11,7 @@ import { getGuestDonationsSum } from "../../_actions/investmentAction";
 import { getGuestExpenseSum } from "../../_actions/expenseAction";
 import { getGuestsTotalRations } from "../../_actions/deliveryAction";
 import { getOrgByHandle } from "../../_actions/OrgAction";
+import { getTotalKitReq } from "../../_actions/kitReqAction";
 import { loadUser } from "../../_actions/authAction";
 
 const Dashboard = ({
@@ -23,6 +24,8 @@ const Dashboard = ({
   getGuestDonationsSum,
   getGuestExpenseSum,
   getGuestsTotalRations,
+  getTotalKitReq,
+  totalKitReq,
   match,
 }) => {
   useEffect(() => {
@@ -31,6 +34,7 @@ const Dashboard = ({
     getGuestDonationsSum(match.params.handle);
     getGuestExpenseSum(match.params.handle);
     getGuestsTotalRations(match.params.handle);
+    getTotalKitReq(match.params.handle);
   }, [
     getGuestDonationsSum,
     getGuestExpenseSum,
@@ -47,6 +51,13 @@ const Dashboard = ({
 
   const balanceRemaining =
     Math.round((balence - (totalExpense ? totalExpense : 0)) * 100) / 100;
+
+  let TotalNo = totalKitReq.map((tn) => tn.totalKitReq);
+  // console.log(totalKitReq);
+  // console.log(TotalNo);
+
+  //filter karne ka zaurat nai h mere khyal se
+
   return (
     <Fragment>
       {loading ? (
@@ -180,15 +191,23 @@ const Dashboard = ({
                 </div>
 
                 <div className="col-xl-2 col-sm-6 py-2">
-                  <Link to="/kitrequest" style={{ textDecoration: "none" }}>
+                  <Link
+                    to={`/kitrequest/${match.params.handle}`}
+                    style={{ textDecoration: "none" }}
+                  >
                     <div className="card text-white bg-warning h-100 w-100">
                       <div className="card-body bg-warning">
                         <div className="rotate">
                           <i className="fa fa-medkit fa-4x"></i>
                         </div>
                         <h4 className="text-uppercase text-dark">
-                          Kit Request
+                          Kit Requests
                         </h4>
+
+                        <div className="circle-tile-number text-center text-faded ">
+                          {!TotalNo ? 0 : TotalNo}
+                        </div>
+
                         <small>Request Kit for Needy People</small>
                       </div>
                     </div>
@@ -237,6 +256,7 @@ Dashboard.propTypes = {
   getGuestExpenseSum: PropTypes.func.isRequired,
   getGuestsTotalRations: PropTypes.func.isRequired,
   getOrgByHandle: PropTypes.func.isRequired,
+  totalKitReq: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -245,6 +265,7 @@ const mapStateToProps = (state) => ({
   overAllExpenses: state.expense.overAllExpenses,
   totalRation: state.delivery.totalRation,
   organisation: state.organisation && state.organisation.organisation,
+  totalKitReq: state.kitreq.totalKitReq,
 });
 export default connect(mapStateToProps, {
   loadUser,
@@ -252,4 +273,5 @@ export default connect(mapStateToProps, {
   getGuestExpenseSum,
   getGuestsTotalRations,
   getOrgByHandle,
+  getTotalKitReq,
 })(withRouter(Dashboard));

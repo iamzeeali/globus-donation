@@ -30,6 +30,13 @@ export default function (state = initialKitReq, action) {
         loading: false,
       };
 
+    case types.GET_TOTAL_KIT_REQ:
+      return {
+        ...state,
+        totalKitReq: payload,
+        loading: false,
+      };
+
     case types.ADD_KIT_REQ:
       return {
         ...state,

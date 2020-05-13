@@ -139,7 +139,10 @@ const resizePhoto = (req, res, next) => {
     .toFormat("jpeg")
     .jpeg({ quality: 80 })
     .toFile(
-      path.join(__dirname, `../public/uploads/profile/${req.file.filename}`)
+      path.join(
+        __dirname,
+        `../client/public/uploads/profile/${req.file.filename}`
+      )
     );
   next();
 };

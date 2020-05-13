@@ -3,7 +3,7 @@ const factory = require("./handlerFactory");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const sendEmail = require("../utils/email");
-
+const APIFeatures = require("../utils/apiFeatures");
 
 //exports.createKitRequest = factory.createOne(KitRequest);
 exports.getAllKitRequests = factory.getAll(KitRequest);
@@ -11,10 +11,20 @@ exports.getKitRequest = factory.getOne(KitRequest);
 exports.updateKitRequest = factory.updateOne(KitRequest);
 exports.deleteKitRequest = factory.deleteOne(KitRequest);
 
-
 exports.createKitRequest = catchAsync(async (req, res, next) => {
   const {
-    name, state, stateName, city, area, road, landmark, houseNo, kitQuantity, phone, email
+    name,
+    state,
+    stateName,
+    city,
+    area,
+    road,
+    landmark,
+    houseNo,
+    kitQuantity,
+    phone,
+    email,
+    handle,
   } = req.body;
 
   const receiverOutput = `
@@ -52,24 +62,34 @@ exports.createKitRequest = catchAsync(async (req, res, next) => {
     let maillist = ["kamran@globuslabs.com", "zeeshan.globuslabs@gmail.com"];
 
     const newKitRequest = new KitRequest({
-      name, state, stateName, city, area, road, landmark, houseNo, kitQuantity, phone, email
+      name,
+      state,
+      stateName,
+      city,
+      area,
+      road,
+      landmark,
+      houseNo,
+      kitQuantity,
+      phone,
+      email,
+      handle,
     });
     const doc = await newKitRequest.save();
-    console.log(req.body);
     await sendEmail({
       to: maillist,
       subject: `New Required Ration Kit Alert`,
-      output: receiverOutput
+      output: receiverOutput,
     });
     await sendEmail({
       to: email,
       subject: `New Required Ration Kit Alert`,
-      output: senderOutput
+      output: senderOutput,
     });
     res.status(200).json({
       status: "success",
       data: doc,
-      message: "Email sent successfully!"
+      message: "Email sent successfully!",
     });
   } catch (err) {
     console.log(err);
@@ -78,4 +98,55 @@ exports.createKitRequest = catchAsync(async (req, res, next) => {
       500
     );
   }
+});
+
+// Total Ration Kit
+
+exports.totalKitReq = catchAsync(async (req, res, next) => {
+  const features = await new APIFeatures(
+    KitRequest.aggregate([
+      { $match: { handle: req.query.handle, active: true } },
+      {
+        $group: {
+          _id: null,
+          totalKitReq: { $sum: "$kitQuantity" },
+        },
+      },
+    ]),
+    req.query
+  ).paginate();
+  console.log(req.query.handle);
+  const docs = await features.query;
+  res.status(200).json({
+    status: "success",
+    result: docs.length,
+    data: docs,
+  });
+});
+
+exports.totalKitReqAdmin = catchAsync(async (req, res, next) => {
+  const features = await new APIFeatures(
+    KitRequest.aggregate([
+      {
+        $match: {
+          handle: req.user.organisation && req.user.organisation.handle,
+          active: true,
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalKitReq: { $sum: "$kitQuantity" },
+        },
+      },
+    ]),
+    req.query
+  ).paginate();
+  console.log(req.query.handle);
+  const docs = await features.query;
+  res.status(200).json({
+    status: "success",
+    result: docs.length,
+    data: docs,
+  });
 });

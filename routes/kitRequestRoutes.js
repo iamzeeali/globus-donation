@@ -8,14 +8,19 @@ const router = express.Router({ mergeParams: true });
 // router.use(authController.protect);
 
 router
-    .route("/")
-    .get(kitrequestController.getAllKitRequests)
-    .post(kitrequestController.createKitRequest);
+  .route("/")
+  .get(kitrequestController.getAllKitRequests)
+  .post(kitrequestController.createKitRequest);
+
+router.route("/total").get(kitrequestController.totalKitReq);
+router
+  .route("/totalAdmin")
+  .get(authController.protect, kitrequestController.totalKitReqAdmin);
 
 router
-    .route("/:id")
-    .get(kitrequestController.getKitRequest)
-    .patch(kitrequestController.updateKitRequest)
-    .delete(kitrequestController.deleteKitRequest);
+  .route("/:id")
+  .get(kitrequestController.getKitRequest)
+  .patch(kitrequestController.updateKitRequest)
+  .delete(kitrequestController.deleteKitRequest);
 
 module.exports = router;

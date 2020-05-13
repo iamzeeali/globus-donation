@@ -5,15 +5,19 @@ import PropTypes from "prop-types";
 import { editExpense, getCurrentExpense } from "../../_actions/expenseAction";
 import moment from "moment";
 import "../UI/Dashboard.css";
+import { getCauses } from "../../_actions/causeAction";
 
 const EditExpense = ({
   expense: { expense, loading },
   history,
   editExpense,
   getCurrentExpense,
+  getCauses,
+  causes,
   match,
 }) => {
   const [formData, setFormData] = useState({
+    cause: "",
     expensor: "",
     amount: "",
     date: new Date(),
@@ -24,6 +28,8 @@ const EditExpense = ({
   useEffect(() => {
     getCurrentExpense(match.params.id);
     setFormData({
+      cause: loading || !expense.cause.cause ? "" : expense.cause.cause,
+
       amount: loading || !expense.amount ? "" : expense.amount,
       date:
         loading || !expense.date
@@ -36,7 +42,7 @@ const EditExpense = ({
     //eslint-disable-next-line
   }, [loading, getCurrentExpense]);
 
-  const { amount, date, purpose, expensor, image } = formData;
+  const { amount, date, purpose, expensor, image, cause } = formData;
 
   const onChangeHandler = (e) => {
     e.preventDefault();
@@ -53,6 +59,8 @@ const EditExpense = ({
     // for uploading images send file as blob multipart/form-data
     let formData = new FormData();
 
+    formData.append("cause", cause);
+
     formData.append("image", image);
     formData.append("amount", amount);
     formData.append("purpose", purpose);
@@ -61,6 +69,12 @@ const EditExpense = ({
 
     editExpense(formData, history, match.params.id);
   };
+
+  let causeOptions = causes.map((cs) => (
+    <option key={cs._id} value={cs._id}>
+      {cs.cause}
+    </option>
+  ));
 
   return (
     <Fragment>
@@ -80,9 +94,20 @@ const EditExpense = ({
                       </h3>
                     </div>
                     <fieldset className="p-4">
+                      <select
+                        className="border p-3 w-100 my-2"
+                        name="cause"
+                        value={cause}
+                        onChange={(e) => onChangeHandler(e)}
+                        required
+                        selected={cause}
+                      >
+                        <option value={cause}>{cause}</option>
+                        {causeOptions}
+                      </select>
                       <input
                         name="expensor"
-                        placeholder="Expensor Name"
+                        placeholder="Expensed by"
                         type="text"
                         value={expensor}
                         onChange={(e) => onChangeHandler(e)}
@@ -160,10 +185,14 @@ EditExpense.propTypes = {
   editExpense: PropTypes.func.isRequired,
   getCurrentExpense: PropTypes.func.isRequired,
   expense: PropTypes.object.isRequired,
+  getCauses: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
   expense: state.expense,
+  causes: state.cause.causes,
 });
-export default connect(mapStateToProps, { editExpense, getCurrentExpense })(
-  EditExpense
-);
+export default connect(mapStateToProps, {
+  editExpense,
+  getCurrentExpense,
+  getCauses,
+})(EditExpense);

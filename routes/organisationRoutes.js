@@ -44,7 +44,7 @@ const resizeReciptPhoto = (req, res, next) => {
     .toFile(
       path.join(
         __dirname,
-        `../public/uploads/organisation/${req.file.filename}`
+        `../client/public/uploads/organisation/${req.file.filename}`
       )
     );
   next();

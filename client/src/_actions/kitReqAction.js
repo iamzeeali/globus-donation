@@ -36,6 +36,42 @@ export const getKitReqs = () => async (dispatch) => {
   }
 };
 
+//Get total KitReq
+export const getTotalKitReq = (handle) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/kitrequest/total?handle=${handle}`);
+    console.log(res.data.data);
+    dispatch({
+      type: types.GET_TOTAL_KIT_REQ,
+      payload: res.data.data,
+    });
+  } catch (err) {
+    console.log(err);
+    // dispatch({
+    //   type: types.RATION_ERROR,
+    //   payload: { msg: err.response.data, status: err.response.status }
+    // });
+  }
+};
+
+//Get total KitReq
+export const getTotalKitReqAdmin = (handle) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/kitrequest/totalAdmin`);
+    console.log(res.data.data);
+    dispatch({
+      type: types.GET_TOTAL_KIT_REQ,
+      payload: res.data.data,
+    });
+  } catch (err) {
+    console.log(err);
+    // dispatch({
+    //   type: types.RATION_ERROR,
+    //   payload: { msg: err.response.data, status: err.response.status }
+    // });
+  }
+};
+
 //Get All KitReqs
 export const getAllKitReqs = () => async (dispatch) => {
   try {

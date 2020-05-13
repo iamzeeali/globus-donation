@@ -186,7 +186,7 @@ const EditOrganisation = ({
 
                       <div>
                         <small>
-                          Upload Recipt{" "}
+                          Upload logo{" "}
                           <b>
                             Max-File-Size-1MB <br />
                             Supported File jpg/png

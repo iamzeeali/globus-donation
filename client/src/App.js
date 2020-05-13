@@ -212,7 +212,7 @@ const App = () => {
             />
             <Route path="/forgetPassword" component={ForgotPassword} />
             <Route path="/resetPassword" component={ResetPassword} />
-            <Route path="/kitrequest" component={KitReq} />
+            <Route path="/kitrequest/:handle" component={KitReq} />
             <Route path="/contactus" component={ContactUs} />
             <Route render={NotFound} />
           </Switch>

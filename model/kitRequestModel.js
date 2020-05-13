@@ -40,7 +40,7 @@ const kitRequestSchema = new mongoose.Schema({
     type: String,
   },
   kitQuantity: {
-    type: String,
+    type: Number,
   },
   phone: {
     type: String,

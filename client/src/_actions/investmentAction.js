@@ -252,25 +252,29 @@ export const editInvestment = (formData, history, id) => async (dispatch) => {
       payload: res.data,
     });
 
-    history.push("//admin/donation/viewAllDonations");
+    history.push("/admin/donation/viewAllDonations");
 
     dispatch(setAlert("Investment Updated", "success"));
   } catch (err) {
-    const errors = err.response.data.errors;
+    console.log(err);
+    const errors = err.response && err.response.data.errors;
 
     if (errors) {
       errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
 
-    if (err.response.status === 400) {
+    if (err.response && err.response.status === 400) {
       dispatch(setAlert(`${err.response.data.msg}`, "danger"));
-    } else if (err.response.status === 500) {
+    } else if (err.response && err.response.status === 500) {
       dispatch(setAlert(`File Too Large or Invalid File Type`, "danger"));
     }
 
     dispatch({
       type: types.INVESTMENT_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
+      payload: {
+        msg: err.response && err.response.statusText,
+        status: err.response && err.response.status,
+      },
     });
   }
 };

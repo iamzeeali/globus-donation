@@ -23,6 +23,7 @@ const AddKitReq = ({
   newCities,
   populateAreas,
   populateCities,
+  match,
 }) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -36,6 +37,7 @@ const AddKitReq = ({
     houseNo: "",
     phone: "",
     email: "",
+    handle: match.params.handle && match.params.handle,
   });
 
   const {

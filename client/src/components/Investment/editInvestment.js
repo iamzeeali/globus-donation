@@ -5,6 +5,8 @@ import {
   editInvestment,
   getCurrentInvestment,
 } from "../../_actions/investmentAction";
+import { getCauses } from "../../_actions/causeAction";
+
 import "../UI/Dashboard.css";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -15,8 +17,11 @@ const EditInvestment = ({
   editInvestment,
   getCurrentInvestment,
   match,
+  getCauses,
+  causes,
 }) => {
   const [formData, setFormData] = useState({
+    cause: "",
     amount: "",
     investor: "",
     date: new Date(),
@@ -25,8 +30,11 @@ const EditInvestment = ({
 
   //format('2013-03-10T02:00:00Z', 'YYYY-MM-DD');
   useEffect(() => {
+    getCauses();
     getCurrentInvestment(match.params.id);
     setFormData({
+      cause: loading || !investment.cause.cause ? "" : investment.cause.cause,
+
       amount: loading || !investment.amount ? "" : investment.amount,
       investor: loading || !investment.investor ? "" : investment.investor,
       date:
@@ -36,9 +44,9 @@ const EditInvestment = ({
       image: loading || !investment.image ? "" : investment.image,
     });
     //eslint-disable-next-line
-  }, [loading, getCurrentInvestment]);
+  }, [loading, getCurrentInvestment, getCauses]);
 
-  const { amount, investor, date, image } = formData;
+  const { amount, investor, date, image, cause } = formData;
 
   const onChangeHandler = (e) => {
     e.preventDefault();
@@ -56,6 +64,8 @@ const EditInvestment = ({
     // for uploading images send file as blob multipart/form-data
     let formData = new FormData();
 
+    formData.append("cause", cause);
+
     formData.append("image", image);
     formData.append("amount", amount);
     formData.append("date", date);
@@ -63,6 +73,12 @@ const EditInvestment = ({
 
     editInvestment(formData, history, match.params.id);
   };
+
+  let causeOptions = causes.map((cs) => (
+    <option key={cs._id} value={cs._id}>
+      {cs.cause}
+    </option>
+  ));
 
   return (
     <Fragment>
@@ -88,9 +104,21 @@ const EditInvestment = ({
                       </h3>
                     </div>
                     <fieldset className="p-4">
+                      <select
+                        className="border p-3 w-100 my-2"
+                        name="cause"
+                        value={cause}
+                        onChange={(e) => onChangeHandler(e)}
+                        required
+                        selected={cause}
+                      >
+                        <option value={cause}>{cause}</option>
+                        {causeOptions}
+                      </select>
+
                       <input
                         name="investor"
-                        placeholder="Doner"
+                        placeholder="Donor"
                         type="text"
                         value={investor}
                         onChange={(e) => onChangeHandler(e)}
@@ -159,11 +187,14 @@ EditInvestment.propTypes = {
   editInvestment: PropTypes.func.isRequired,
   getCurrentInvestment: PropTypes.func.isRequired,
   investment: PropTypes.object.isRequired,
+  getCauses: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
   investment: state.investment,
+  causes: state.cause.causes,
 });
 export default connect(mapStateToProps, {
   editInvestment,
   getCurrentInvestment,
+  getCauses,
 })(EditInvestment);

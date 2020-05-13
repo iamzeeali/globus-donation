@@ -6,7 +6,7 @@ import Spinner from "../UI/Spinner";
 import { connect } from "react-redux";
 import "./reports.css";
 import { logout } from "../../_actions/authAction";
-import { getKitReqs } from "../../_actions/kitReqAction";
+import { getKitReqs, getTotalKitReqAdmin } from "../../_actions/kitReqAction";
 import { getContactUss } from "../../_actions/ContactUsAction";
 
 const ReportLanding = ({
@@ -16,11 +16,15 @@ const ReportLanding = ({
   contact_length,
   getContactUss,
   getKitReqs,
+  totalKitReq,
+  getTotalKitReqAdmin,
 }) => {
   useEffect(() => {
-    getKitReqs();
+    getTotalKitReqAdmin();
     getContactUss();
-  }, [getKitReqs, getContactUss]);
+  }, [getTotalKitReqAdmin, getContactUss]);
+
+  let TotalNo = totalKitReq.map((tn) => tn.totalKitReq);
 
   return (
     <Fragment>
@@ -111,7 +115,7 @@ const ReportLanding = ({
                         </div>
                         <h3 className="text-uppercase">
                           View Requested Kits{" "}
-                          <span className="text-primary"> ({req_length})</span>{" "}
+                          <span className="text-primary"> ({TotalNo})</span>{" "}
                         </h3>
                         <small>Needy users requested kits </small>
                       </div>
@@ -151,7 +155,7 @@ const ReportLanding = ({
 };
 ReportLanding.propTypes = {
   logout: PropTypes.func.isRequired,
-  getKitReqs: PropTypes.func.isRequired,
+  getTotalKitReqAdmin: PropTypes.func.isRequired,
   getContactUss: PropTypes.func.isRequired,
 };
 
@@ -160,10 +164,13 @@ const mapStateToProps = (state) => ({
   loading: state.auth.loading,
   req_length: state.kitreq.req_length,
   contact_length: state.contactus.contact_length,
+  totalKitReq: state.kitreq.totalKitReq,
 });
-export default connect(mapStateToProps, { logout, getKitReqs, getContactUss })(
-  withRouter(ReportLanding)
-);
+export default connect(mapStateToProps, {
+  logout,
+  getTotalKitReqAdmin,
+  getContactUss,
+})(withRouter(ReportLanding));
 
 // <div className="col-xl-3 col-sm-6 py-2">
 // <Link to="/admin/investment/projectwiseinvestment" style={{ textDecoration: "none" }}>
