@@ -140,7 +140,7 @@ const EditInvestment = ({
                       <input
                         name="country"
                         placeholder="Donor Country"
-                        type="number"
+                        type="text"
                         value={country}
                         onChange={(e) => onChangeHandler(e)}
                         className="border p-3 w-100 my-2"
