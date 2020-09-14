@@ -116,7 +116,8 @@ const GuestDonations = ({
                         Date
                       </th>
                       <th scope="col">Donated By</th>
-                      <th scope="col">Recipt</th>
+                      <th scope="col">Country</th>
+                      <th scope="col">Receipt</th>
                       <th scope="col">Added by</th>
                     </tr>
                   </thead>
@@ -140,6 +141,7 @@ const GuestDonations = ({
                             ? "Hidden"
                             : investment.investor}
                         </td>
+                        <td>{!investment.country ? "" : investment.country}</td>
 
                         <td>
                           <a
