@@ -235,7 +235,7 @@ const AddDeliveredKit = ({
                   ? deliveries.map((del) => (
                       <tr key={del._id}>
                         <td>{moment(del.date).format("DD-MM-YYYY")}</td>
-                        <td>{del.orgName}</td>
+                        <td>{del.handle}</td>
                         <td>{del.kitType}</td>
                         <td>{del.kitQuantity}</td>
                         <td>{del.state}</td>

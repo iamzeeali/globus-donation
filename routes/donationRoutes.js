@@ -102,13 +102,14 @@ router.route("/").post(
   upload.single("image"),
   resizeReciptPhoto,
   catchAsync(async (req, res, next) => {
-    const { cause, amount, investor, date, image } = req.body;
+    const { cause, amount, investor, country, date, image } = req.body;
     try {
       const newInvestment = new Investment({
         cause,
         amount,
         date,
         investor,
+        country,
         user: req.user.id,
         username: req.user.username,
         image: req.file ? req.file.filename : image,
@@ -141,13 +142,23 @@ router.route("/:id").patch(
   upload.single("image"),
   resizeReciptPhoto,
   catchAsync(async (req, res, next) => {
-    const { amount, investor, currency, date, image } = req.body;
+    const {
+      cause,
+      amount,
+      investor,
+      currency,
+      country,
+      date,
+      image,
+    } = req.body;
 
     const doc = await Investment.findByIdAndUpdate(req.params.id, {
+      cause,
       amount,
       currency,
       date,
       investor,
+      country,
       new: true,
       runValidators: true,
       user: req.user.id,

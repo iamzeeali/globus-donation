@@ -4,7 +4,26 @@ const APIFeatures = require("../utils/apiFeatures");
 const catchAsync = require("../utils/catchAsync");
 
 //exports.createGrocery = factory.createOne(Grocery);
-exports.getAllGrocerys = factory.getAll(Grocery);
+// exports.getAllGrocerys = factory.getAll(Grocery);
+
+exports.getAllGrocerys = catchAsync(async (req, res, next) => {
+  const features = await new APIFeatures(
+    Grocery.find({
+      handle: req.user.organisation && req.user.organisation.handle,
+    }),
+    req.query
+  )
+    .sort()
+    .paginate()
+    .filter();
+  const docs = await features.query;
+  res.status(200).json({
+    status: "success",
+    result: docs.length,
+    data: docs,
+  });
+});
+
 exports.getGrocery = factory.getOne(Grocery);
 //exports.updateGrocery = factory.updateOne(Grocery);
 exports.deleteGrocery = factory.deleteOne(Grocery);

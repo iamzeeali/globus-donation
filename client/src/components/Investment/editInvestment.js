@@ -24,6 +24,7 @@ const EditInvestment = ({
     cause: "",
     amount: "",
     investor: "",
+    country: "",
     date: new Date(),
     image: "",
   });
@@ -37,6 +38,7 @@ const EditInvestment = ({
 
       amount: loading || !investment.amount ? "" : investment.amount,
       investor: loading || !investment.investor ? "" : investment.investor,
+      country: loading || !investment.country ? "" : investment.country,
       date:
         loading || !investment.date
           ? ""
@@ -46,7 +48,7 @@ const EditInvestment = ({
     //eslint-disable-next-line
   }, [loading, getCurrentInvestment, getCauses]);
 
-  const { amount, investor, date, image, cause } = formData;
+  const { amount, investor, country, date, image, cause } = formData;
 
   const onChangeHandler = (e) => {
     e.preventDefault();
@@ -70,6 +72,7 @@ const EditInvestment = ({
     formData.append("amount", amount);
     formData.append("date", date);
     formData.append("investor", investor);
+    formData.append("country", country);
 
     editInvestment(formData, history, match.params.id);
   };
@@ -134,6 +137,15 @@ const EditInvestment = ({
                         className="border p-3 w-100 my-2"
                       />
 
+                      <input
+                        name="country"
+                        placeholder="Donor Country"
+                        type="number"
+                        value={country}
+                        onChange={(e) => onChangeHandler(e)}
+                        className="border p-3 w-100 my-2"
+                      />
+
                       <div>
                         <small>Select Date</small>
                         <input
@@ -148,7 +160,7 @@ const EditInvestment = ({
 
                       <div>
                         <small>
-                          Upload Recipt{" "}
+                          Upload Receipt{" "}
                           <b>
                             Max-File-Size-1MB <br />
                             Supported File jpg/png

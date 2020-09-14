@@ -127,7 +127,8 @@ const ViewAllInvestment = ({
                         Date
                       </th>
                       <th scope="col">Donated By</th>
-                      <th scope="col">Recipt</th>
+                      <th scope="col">Country</th>
+                      <th scope="col">Receipt</th>
                       <th scope="col">Added by</th>
                       <th scope="col">Actions</th>
                     </tr>
@@ -152,7 +153,7 @@ const ViewAllInvestment = ({
                             ? "Hidden"
                             : investment.investor}
                         </td>
-
+                        <td>{!investment.country ? "" : investment.country}</td>
                         <td>
                           <a
                             href={`/uploads/${investment.image}`}

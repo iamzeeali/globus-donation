@@ -98,7 +98,7 @@ const InvestmentMaster = ({
                           Date
                         </th>
                         <th scope="col">Investor</th>
-                        <th scope="col">Recipt</th>
+                        <th scope="col">Receipt</th>
                         <th scope="col" className="text-right">
                           Action
                         </th>

@@ -23,7 +23,10 @@ const donationSchema = new mongoose.Schema({
   },
   amount: {
     type: Number,
-    required: [true, "Must be Investing Amount"],
+    required: [true, "There Must be Donation Amount"],
+  },
+  country: {
+    type: String,
   },
   date: {
     type: Date,

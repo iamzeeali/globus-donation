@@ -70,19 +70,19 @@ const deliverySchema = new mongoose.Schema({
 
 deliverySchema.index({ "$**": "text" });
 
-deliverySchema.pre(/^find/, function (next) {
-  this.populate({
-    path: "user",
-  })
-    .populate({
-      path: "organisation",
-    })
-    .populate({
-      path: "cause",
-    });
+// deliverySchema.pre(/^find/, function (next) {
+//   this.populate({
+//     path: "user",
+//   })
+//     .populate({
+//       path: "organisation",
+//     })
+//     .populate({
+//       path: "cause",
+//     });
 
-  next();
-});
+//   next();
+// });
 
 deliverySchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } });

@@ -74,7 +74,10 @@ exports.getAllByOrg = catchAsync(async (req, res, next) => {
   const features = await new APIFeatures(
     Ration.find({
       organisation: req.user.organisation && req.user.organisation.id,
-    }),
+    })
+      .populate("user")
+      .populate("cause")
+      .populate("organisation"),
     req.query
   )
     .sort()
@@ -128,7 +131,6 @@ exports.guestsTotal = catchAsync(async (req, res, next) => {
   });
 });
 
-// Total Ration Kit
 exports.totalRations = catchAsync(async (req, res, next) => {
   let handle = req.user.organisation && req.user.organisation.handle;
   const features = await new APIFeatures(
@@ -155,6 +157,8 @@ exports.totalRations = catchAsync(async (req, res, next) => {
 //Search Delivery
 exports.searchDelivery = catchAsync(async (req, res, next) => {
   try {
+    console.log(req.body);
+
     const features = await new APIFeatures(
       Ration.find({
         $text: { $search: req.body.searchString },
@@ -163,6 +167,7 @@ exports.searchDelivery = catchAsync(async (req, res, next) => {
     ).filter();
 
     const docs = await features.query;
+
     res.status(200).json({
       status: "success",
       result: docs.length,

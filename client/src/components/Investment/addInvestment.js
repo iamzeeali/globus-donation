@@ -19,11 +19,12 @@ const AddInvestment = ({
     cause: "",
     investor: "",
     amount: "",
+    country: "",
     date: new Date(),
     image: "",
   });
 
-  const { investor, amount, date, image, cause } = formData;
+  const { investor, amount, country, date, image, cause } = formData;
 
   useEffect(() => {
     getAllUsers();
@@ -50,6 +51,7 @@ const AddInvestment = ({
     formData.append("image", image);
     formData.append("amount", amount);
     formData.append("date", date);
+    formData.append("country", country);
     formData.append("investor", investor);
     formData.append("cause", cause);
     addInvestment(formData, history);
@@ -115,6 +117,16 @@ const AddInvestment = ({
                         required
                       />
 
+                      <input
+                        name="country"
+                        placeholder="Donor Country"
+                        type="text"
+                        value={country}
+                        onChange={(e) => onChangeHandler(e)}
+                        className="border p-3 w-100 my-2"
+                        required
+                      />
+
                       <div>
                         <small>Select Date</small>
                         <input
@@ -130,7 +142,7 @@ const AddInvestment = ({
 
                       <div>
                         <small>
-                          Upload Recipt{" "}
+                          Upload Receipt{" "}
                           <b>
                             Max-File-Size-1MB <br />
                             Supported File jpg/png
