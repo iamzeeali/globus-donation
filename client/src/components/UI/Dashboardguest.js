@@ -78,16 +78,16 @@ const Dashboard = ({
                           Available Donation (INR)
                         </div>
                         <div className="circle-tile-number text-faded ">
-                          {balanceRemaining} ={" "}
-                          <small className="text-white">{`(${
+                          {balanceRemaining}{" "}
+                          {/* <small className="text-white">{`(${
                             Math.round((balanceRemaining / 785) * 10) / 10
-                          } Kit)`}</small>
+                          } Kit)`}</small> */}
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="col-lg-3 col-md-5 col-sm-6">
+                  {/* <div className="col-lg-3 col-md-5 col-sm-6">
                     <div className="circle-tile ">
                       <Link to={`/guestDeliveries/${match.params.handle}`}>
                         <div className="circle-tile-heading orange">
@@ -103,7 +103,7 @@ const Dashboard = ({
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div>  */}
 
                   <div className="col-lg-3 col-md-5 col-sm-6">
                     <div className="circle-tile ">
@@ -190,7 +190,7 @@ const Dashboard = ({
                   </Link>
                 </div>
 
-                <div className="col-xl-2 col-sm-6 py-2">
+                {/*<div className="col-xl-2 col-sm-6 py-2">
                   <Link
                     to={`/kitrequest/${match.params.handle}`}
                     style={{ textDecoration: "none" }}
@@ -212,7 +212,7 @@ const Dashboard = ({
                       </div>
                     </div>
                   </Link>
-                </div>
+                </div> */}
 
                 <div className="col-xl-2 col-sm-6 py-2">
                   <Link to="/contactus" style={{ textDecoration: "none" }}>
