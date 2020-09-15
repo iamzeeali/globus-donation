@@ -128,13 +128,7 @@ const GuestDonations = ({
                         <td>
                           {!investment.cause ? "NA" : investment.cause.cause}
                         </td>
-                        <td>
-                          ₹{`${investment.amount}`}
-                          <br />
-                          <small className="text-danger">{`${
-                            Math.round((investment.amount / 785) * 10) / 10
-                          } Kit`}</small>
-                        </td>
+                        <td>₹{`${investment.amount}`}</td>
                         <td>{moment(investment.date).format("DD-MM-YYYY")}</td>
                         <td>
                           {!investment.investor
