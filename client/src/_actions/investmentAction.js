@@ -23,7 +23,7 @@ export const getCurrentInvestment = (id) => async (dispatch) => {
 export const getGuestDonations = (limit, page, handle) => async (dispatch) => {
   try {
     const res = await axios.get(
-      `/api/investment/guestDonations?limit=${limit}&page=${page}&handle=${handle}`
+      `/api/investment/guestDonations?handle=${handle}`
     );
     dispatch({
       type: types.GET_GUEST_DONATIONS,
