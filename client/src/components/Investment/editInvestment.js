@@ -22,6 +22,7 @@ const EditInvestment = ({
 }) => {
   const [formData, setFormData] = useState({
     cause: "",
+    causeId: "",
     amount: "",
     investor: "",
     country: "",
@@ -35,6 +36,7 @@ const EditInvestment = ({
     getCurrentInvestment(match.params.id);
     setFormData({
       cause: loading || !investment.cause.cause ? "" : investment.cause.cause,
+      causeId: loading || !investment.cause.id ? "" : investment.cause.id,
 
       amount: loading || !investment.amount ? "" : investment.amount,
       investor: loading || !investment.investor ? "" : investment.investor,
@@ -48,7 +50,7 @@ const EditInvestment = ({
     //eslint-disable-next-line
   }, [loading, getCurrentInvestment, getCauses]);
 
-  const { amount, investor, country, date, image, cause } = formData;
+  const { amount, investor, country, date, image, cause, causeId } = formData;
 
   const onChangeHandler = (e) => {
     e.preventDefault();
@@ -66,7 +68,7 @@ const EditInvestment = ({
     // for uploading images send file as blob multipart/form-data
     let formData = new FormData();
 
-    formData.append("cause", cause);
+    formData.append("causeId", causeId);
 
     formData.append("image", image);
     formData.append("amount", amount);
@@ -76,12 +78,6 @@ const EditInvestment = ({
 
     editInvestment(formData, history, match.params.id);
   };
-
-  let causeOptions = causes.map((cs) => (
-    <option key={cs._id} value={cs._id}>
-      {cs.cause}
-    </option>
-  ));
 
   return (
     <Fragment>
@@ -107,18 +103,14 @@ const EditInvestment = ({
                       </h3>
                     </div>
                     <fieldset className="p-4">
-                      <select
-                        className="border p-3 w-100 my-2"
+                      <input
                         name="cause"
+                        placeholder="cause"
+                        type="text"
                         value={cause}
                         onChange={(e) => onChangeHandler(e)}
-                        required
-                        selected={cause}
-                      >
-                        <option value={cause}>{cause}</option>
-                        {causeOptions}
-                      </select>
-
+                        className="border p-3 w-100 my-2"
+                      />
                       <input
                         name="investor"
                         placeholder="Donor"
